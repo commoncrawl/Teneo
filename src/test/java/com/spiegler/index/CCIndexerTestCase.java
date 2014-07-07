@@ -55,7 +55,7 @@ public class CCIndexerTestCase {
 		JobConf conf = new JobConf();
 		mapDriver.withConfiguration(conf)
 		.withInput(new Text(), item1)
-		.withOutput(new CCIndexKey("com", "google.com","text/html", "utf-8","file1"), new CCIndexValue(3,1))
+		.withOutput(new CCIndexKey("com", "google.com","text/html", "utf-8","file1"), new CCIndexValue(3,42,1))
 		.runTest();
 	}
 	
@@ -63,13 +63,13 @@ public class CCIndexerTestCase {
 	public void testReducer(){
 		CCIndexKey key = new CCIndexKey("com", "google.com","text/html", "utf-8","file1");
 		List<CCIndexValue> list = new ArrayList<CCIndexValue>();
-		list.add(new CCIndexValue(1,4));
-		list.add(new CCIndexValue(2,5));
-		list.add(new CCIndexValue(3,6));
+		list.add(new CCIndexValue(1,1,4));
+		list.add(new CCIndexValue(2,1,5));
+		list.add(new CCIndexValue(3,1,16));
 		JobConf conf = new JobConf();
 		reduceDriver.withConfiguration(conf)
 		.withInput(key, list)
-		.withOutput(key, new CCIndexValue(6,15))
+		.withOutput(key, new CCIndexValue(6,1,15))
 		.runTest();
 	}
 	
@@ -81,8 +81,8 @@ public class CCIndexerTestCase {
 		.withInput(new Text(), item2)
 		.withInput(new Text(), item3)
 		.withInput(new Text(), item4)
-		.withOutput(new CCIndexKey("com", "google.com","text/html", "utf-8","file1"), new CCIndexValue(7,2))
-		.withOutput(new CCIndexKey("com", "google.com","text/html", "utf-8","file2"), new CCIndexValue(3,1))
+		.withOutput(new CCIndexKey("com", "google.com","text/html", "utf-8","file1"), new CCIndexValue(7,1,2))
+		.withOutput(new CCIndexKey("com", "google.com","text/html", "utf-8","file2"), new CCIndexValue(3,1,1))
 		.withCounter("CCIndexMapper.exception", "UnsupportedCharsetException", 1)
 		.runTest();
 	}

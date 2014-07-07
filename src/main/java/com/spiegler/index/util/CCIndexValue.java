@@ -10,12 +10,14 @@ import org.apache.hadoop.io.WritableComparable;
 public class CCIndexValue implements WritableComparable<CCIndexValue>{
 
 	private LongWritable byteSize 	= new LongWritable();
+	private LongWritable hyperlinks	= new LongWritable();
 	private LongWritable count		= new LongWritable();
 
 	public CCIndexValue() { }
 
-	public CCIndexValue(long byteSize, long count){
+	public CCIndexValue(long byteSize, long hyperlinks, long count){
 		this.byteSize.set(byteSize);
+		this.hyperlinks.set(hyperlinks);
 		this.count.set(count);
 	}
 
@@ -25,6 +27,8 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 		.append('{')
 		.append(this.byteSize)
 		.append(',')
+		.append(this.hyperlinks)
+		.append(',')
 		.append(this.count)
 		.append('}')				
 		.toString();
@@ -33,12 +37,14 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 	@Override
 	public void readFields(DataInput in) throws IOException {
 		this.byteSize.set(in.readLong());
+		this.hyperlinks.set(in.readLong());
 		this.count.set(in.readLong());
 	}
 
 	@Override
 	public void write(DataOutput out) throws IOException {
 		out.writeLong(this.byteSize.get());
+		out.writeLong(this.hyperlinks.get());
 		out.writeLong(this.count.get());
 	}
 
@@ -48,6 +54,7 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 		int result = 1;
 		result = prime * result
 		+ ((byteSize == null) ? 0 : byteSize.hashCode());
+		result = prime * result + ((hyperlinks == null) ? 0 : hyperlinks.hashCode());
 		result = prime * result + ((count == null) ? 0 : count.hashCode());
 		return result;
 	}
@@ -61,11 +68,19 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 		if (getClass() != obj.getClass())
 			return false;
 		CCIndexValue other = (CCIndexValue) obj;
+		// Bytesize
 		if (byteSize == null) {
 			if (other.byteSize != null)
 				return false;
 		} else if (!byteSize.equals(other.byteSize))
 			return false;
+		// Hyperlinks
+		if (hyperlinks == null) {
+			if (other.hyperlinks != null)
+				return false;
+		} else if (!hyperlinks.equals(other.hyperlinks))
+			return false;
+		// Count
 		if (count == null) {
 			if (other.count != null)
 				return false;
@@ -78,6 +93,9 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 	public int compareTo(CCIndexValue other) {
 		int ret = byteSize.compareTo(other.byteSize);
 		if (ret == 0) {
+			ret = hyperlinks.compareTo(other.hyperlinks);
+		}
+		if (ret == 0) {
 			return count.compareTo(other.count);
 		}
 		return ret;
@@ -89,6 +107,14 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 
 	public void setByteSize(LongWritable byteSize) {
 		this.byteSize = byteSize;
+	}
+	
+	public LongWritable getHyperlinks() {
+		return hyperlinks;
+	}
+
+	public void setHyperlinks(LongWritable hyperlinks) {
+		this.hyperlinks = hyperlinks;
 	}
 
 	public LongWritable getCount() {

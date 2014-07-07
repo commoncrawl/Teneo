@@ -17,17 +17,17 @@ public class CCIndexValueTestCase {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.value1 = new CCIndexValue(1,1);
-		this.value2 = new CCIndexValue(1,1);
-		this.value3 = new CCIndexValue(2,1);
-		this.value4 = new CCIndexValue(1,2);
+		this.value1 = new CCIndexValue(1,1,1);
+		this.value2 = new CCIndexValue(1,1,1);
+		this.value3 = new CCIndexValue(2,3,1);
+		this.value4 = new CCIndexValue(1,3,2);
 	}
 
 	@Test
 	public void testToString() {
-		assertEquals("{1,1}",this.value1.toString());
-		assertEquals("{2,1}",this.value3.toString());
-		assertEquals("{1,2}",this.value4.toString());
+		assertEquals("{1,1,1}",this.value1.toString());
+		assertEquals("{2,3,1}",this.value3.toString());
+		assertEquals("{1,3,2}",this.value4.toString());
 	}
 
 	@Test
@@ -65,10 +65,24 @@ public class CCIndexValueTestCase {
 
 	@Test
 	public void testSetByteSize() {
-		CCIndexValue value = new CCIndexValue(1, 1);
+		CCIndexValue value = new CCIndexValue(1, 1, 1);
 		assertEquals(new LongWritable(1), value.getByteSize());
 		value.setByteSize(new LongWritable(2));
 		assertEquals(new LongWritable(2), value.getByteSize());
+	}
+	
+	@Test
+	public void testGetHyperlinks() {
+		assertEquals(new LongWritable(1), this.value1.getHyperlinks());
+		assertEquals(new LongWritable(3), this.value3.getHyperlinks());
+	}
+
+	@Test
+	public void testSetHyperlinks() {
+		CCIndexValue value = new CCIndexValue(1, 42, 1);
+		assertEquals(new LongWritable(42), value.getHyperlinks());
+		value.setHyperlinks(new LongWritable(128));
+		assertEquals(new LongWritable(128), value.getHyperlinks());
 	}
 
 	@Test
@@ -79,7 +93,7 @@ public class CCIndexValueTestCase {
 
 	@Test
 	public void testSetCount() {
-		CCIndexValue value = new CCIndexValue(1, 1);
+		CCIndexValue value = new CCIndexValue(1, 1, 1);
 		assertEquals(new LongWritable(1), value.getCount());
 		value.setCount(new LongWritable(2));
 		assertEquals(new LongWritable(2), value.getCount());

@@ -33,7 +33,7 @@ public class CCIndexMapper extends MapReduceBase implements Mapper<Text, ArcFile
 			Long byteSize 	= IndexUtil.byteSize(value, charset);
 			
 			CCIndexKey k 	= new CCIndexKey(psuffix, domain, mtype, charset, fname);
-			CCIndexValue v 	= new CCIndexValue(byteSize, 1);
+			CCIndexValue v 	= new CCIndexValue(byteSize, 1, 1);
 			output.collect(k, v);
 			
 			reporter.incrCounter("CCIndexMapper", "files", 1);

@@ -30,7 +30,7 @@ public class CCIndexReducer extends MapReduceBase implements Reducer<CCIndexKey,
 			byteSum 	+= value.getByteSize().get();
 			countSum 	+= value.getCount().get();
 		}
-		output.collect(key, new CCIndexValue(byteSum, countSum));
+		output.collect(key, new CCIndexValue(byteSum, 1, countSum));
 		reporter.incrCounter("CCIndexReducer", "files", countSum);
 		reporter.incrCounter("CCIndexReducer", "bytes", byteSum);
 	}
