@@ -5,13 +5,14 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.VLongWritable;
 import org.apache.hadoop.io.WritableComparable;
 
 public class CCIndexValue implements WritableComparable<CCIndexValue>{
 
-	private LongWritable byteSize 	= new LongWritable();
-	private LongWritable hyperlinks	= new LongWritable();
-	private LongWritable count		= new LongWritable();
+	private VLongWritable byteSize		= new VLongWritable();
+	private VLongWritable hyperlinks	= new VLongWritable();
+	private VLongWritable count			= new VLongWritable();
 
 	public CCIndexValue() { }
 
@@ -30,7 +31,7 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 		.append(this.hyperlinks)
 		.append(',')
 		.append(this.count)
-		.append('}')				
+		.append('}')
 		.toString();
 	}
 
@@ -101,27 +102,27 @@ public class CCIndexValue implements WritableComparable<CCIndexValue>{
 		return ret;
 	}
 	
-	public LongWritable getByteSize() {
+	public VLongWritable getByteSize() {
 		return byteSize;
 	}
 
-	public void setByteSize(LongWritable byteSize) {
+	public void setByteSize(VLongWritable byteSize) {
 		this.byteSize = byteSize;
 	}
 	
-	public LongWritable getHyperlinks() {
+	public VLongWritable getHyperlinks() {
 		return hyperlinks;
 	}
 
-	public void setHyperlinks(LongWritable hyperlinks) {
+	public void setHyperlinks(VLongWritable hyperlinks) {
 		this.hyperlinks = hyperlinks;
 	}
 
-	public LongWritable getCount() {
+	public VLongWritable getCount() {
 		return count;
 	}
 
-	public void setCount(LongWritable count) {
+	public void setCount(VLongWritable count) {
 		this.count = count;
 	}
 

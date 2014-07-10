@@ -3,6 +3,7 @@ package com.spiegler.index.util;
 import static org.junit.Assert.*;
 
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.VLongWritable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,9 +67,9 @@ public class CCIndexValueTestCase {
 	@Test
 	public void testSetByteSize() {
 		CCIndexValue value = new CCIndexValue(1, 1, 1);
-		assertEquals(new LongWritable(1), value.getByteSize());
-		value.setByteSize(new LongWritable(2));
-		assertEquals(new LongWritable(2), value.getByteSize());
+		assertEquals(new VLongWritable(1), value.getByteSize());
+		value.setByteSize(new VLongWritable(2));
+		assertEquals(new VLongWritable(2), value.getByteSize());
 	}
 	
 	@Test
@@ -80,9 +81,9 @@ public class CCIndexValueTestCase {
 	@Test
 	public void testSetHyperlinks() {
 		CCIndexValue value = new CCIndexValue(1, 42, 1);
-		assertEquals(new LongWritable(42), value.getHyperlinks());
-		value.setHyperlinks(new LongWritable(128));
-		assertEquals(new LongWritable(128), value.getHyperlinks());
+		assertEquals(new VLongWritable(42), value.getHyperlinks());
+		value.setHyperlinks(new VLongWritable(128));
+		assertEquals(new VLongWritable(128), value.getHyperlinks());
 	}
 
 	@Test
@@ -94,9 +95,9 @@ public class CCIndexValueTestCase {
 	@Test
 	public void testSetCount() {
 		CCIndexValue value = new CCIndexValue(1, 1, 1);
-		assertEquals(new LongWritable(1), value.getCount());
-		value.setCount(new LongWritable(2));
-		assertEquals(new LongWritable(2), value.getCount());
+		assertEquals(new VLongWritable(1), value.getCount());
+		value.setCount(new VLongWritable(2));
+		assertEquals(new VLongWritable(2), value.getCount());
 	}
 
 }
