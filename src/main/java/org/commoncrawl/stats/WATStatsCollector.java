@@ -39,25 +39,23 @@ public class WATStatsCollector extends Configured implements Tool {
 	 * @return	0 if the Hadoop job completes successfully and 1 otherwise.
 	 */
 	@Override
-	public int run(String[] arg0) throws Exception {
+	public int run(String[] args) throws Exception {
 		Configuration conf = getConf();
 		//
-		conf.setBoolean("mapred.output.compress", true);
-		conf.setClass("mapred.output.compression.codec", GzipCodec.class, CompressionCodec.class);
-		conf.setInt("mapred.max.map.failures.percent", 2);
+		conf.setBoolean("mapreduce.output.fileoutputformat.compress", true);
+		conf.setClass("mapreduce.output.fileoutputformat.compress.codec", GzipCodec.class, CompressionCodec.class);
+		conf.setInt("mapreduce.map.failures.maxpercent", 2);
 		//
 		Job job = new Job(conf);
 		job.setJarByClass(WATStatsCollector.class);
 		job.setNumReduceTasks(0);
 		
-		String inputPath = "data/*.warc.wat.gz";
-		//inputPath = "s3n://aws-publicdatasets/common-crawl/crawl-data/CC-MAIN-2014-15/segments/1398223203235.2/wat/CC-MAIN-20140423032003-00663-ip-10-147-4-33.ec2.internal.warc.wat.gz";
+		String inputPath = args[0];
 		LOG.info("Input path: " + inputPath);
 		FileInputFormat.addInputPath(job, new Path(inputPath));
 		
-		//String outputPath = "s3n://commoncrawl-smerity/stats/";
-		String outputPath = "/tmp/cc/";
-		FileSystem fs = FileSystem.get(conf);
+		String outputPath = args[1];
+		FileSystem fs = FileSystem.get(new java.net.URI(outputPath), conf);
 		if (fs.exists(new Path(outputPath))) {
 			fs.delete(new Path(outputPath), true);
 		}
