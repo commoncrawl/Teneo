@@ -2,7 +2,6 @@ package com.spiegler.index.util;
 
 import static org.junit.Assert.*;
 
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.VLongWritable;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class CCIndexValueTestCase {
 		assertEquals(false, this.value1.equals(this.value4));
 	}
 
-	@Test
+	/*@Test
 	public void testCompareTo() {
 		assertEquals( 0, this.value1.compareTo(this.value2));
 		assertEquals( 0, this.value2.compareTo(this.value1));
@@ -56,12 +55,12 @@ public class CCIndexValueTestCase {
 
 		assertEquals( 1, this.value3.compareTo(this.value1));
 		assertEquals( 1, this.value4.compareTo(this.value1));
-	}
+	}*/
 
 	@Test
 	public void testGetByteSize() {
-		assertEquals(new LongWritable(1), this.value1.getByteSize());
-		assertEquals(new LongWritable(2), this.value3.getByteSize());
+		assertEquals(new VLongWritable(1), this.value1.getByteSize());
+		assertEquals(new VLongWritable(2), this.value3.getByteSize());
 	}
 
 	@Test
@@ -74,8 +73,8 @@ public class CCIndexValueTestCase {
 	
 	@Test
 	public void testGetHyperlinks() {
-		assertEquals(new LongWritable(1), this.value1.getHyperlinks());
-		assertEquals(new LongWritable(3), this.value3.getHyperlinks());
+		assertEquals(new VLongWritable(1), this.value1.getHyperlinks());
+		assertEquals(new VLongWritable(3), this.value3.getHyperlinks());
 	}
 
 	@Test
@@ -88,8 +87,8 @@ public class CCIndexValueTestCase {
 
 	@Test
 	public void testGetCount() {
-		assertEquals(new LongWritable(1), this.value1.getCount());
-		assertEquals(new LongWritable(2), this.value4.getCount());
+		assertEquals(new VLongWritable(1), this.value1.getCount());
+		assertEquals(new VLongWritable(2), this.value4.getCount());
 	}
 
 	@Test

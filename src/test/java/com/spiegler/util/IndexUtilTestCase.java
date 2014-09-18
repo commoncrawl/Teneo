@@ -1,17 +1,9 @@
 package com.spiegler.util;
 
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.hadoop.record.Buffer;
-import org.commoncrawl.protocol.shared.ArcFileHeaderItem;
-import org.commoncrawl.protocol.shared.ArcFileItem;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import com.spiegler.util.IndexUtil;
-
-import static org.junit.Assert.assertEquals;
 
 public class IndexUtilTestCase {
 	
@@ -48,69 +40,5 @@ public class IndexUtilTestCase {
 		assertEquals("bbc.co.uk", 			IndexUtil.getSecondLevelDomain("http://news.bbc.co.uk"));		
 		assertEquals("127.0.0.1", 			IndexUtil.getSecondLevelDomain("127.0.0.1"));
 	}
-	
-	@Test
-	public void testByteSize1() throws Exception{
-		ArcFileItem item	= new ArcFileItem();
-		byte[] bytes = {1,2,3,4,5};
-		item.setContent(new Buffer(bytes), false);
-		assertEquals(5, IndexUtil.byteSize(item, "none"));
-		assertEquals(5, IndexUtil.byteSize(item, "utf-8"));
-		assertEquals(5, IndexUtil.byteSize(item, "iso-8859-1"));
-		assertEquals(5, IndexUtil.byteSize(item, "gb18030"));
-	}
-	
-	@Test
-	(expected=UnsupportedCharsetException.class)
-	public void testByteSize2() throws Exception{
-		ArcFileItem item	= new ArcFileItem();
-		byte[] bytes = {1,2,3,4,5};
-		item.setContent(new Buffer(bytes), false);
-		assertEquals(5, IndexUtil.byteSize(item, "foo"));
-	}
-	
-	@Test
-	public void testExtractCharset1(){
-		List<ArcFileHeaderItem> items = new ArrayList<ArcFileHeaderItem>();
-		ArcFileHeaderItem item = new ArcFileHeaderItem();
-		item.setItemKey("Content-Type");item.setItemValue("text/html; charset=UTF-8");
-		items.add(item);
-		assertEquals("utf-8", IndexUtil.extractCharset(items));
-	}
-	
-	@Test
-	public void testExtractCharset2(){
-		List<ArcFileHeaderItem> items = new ArrayList<ArcFileHeaderItem>();
-		ArcFileHeaderItem item = new ArcFileHeaderItem();
-		item.setItemKey("Content-Type");item.setItemValue("text/plain; charset=ISO-8859-1");
-		items.add(item);
-		assertEquals("iso-8859-1", IndexUtil.extractCharset(items));
-	}
 
-	@Test
-	public void testExtractCharset3(){
-		List<ArcFileHeaderItem> items = new ArrayList<ArcFileHeaderItem>();
-		ArcFileHeaderItem item = new ArcFileHeaderItem();
-		item.setItemKey("Content-Type");item.setItemValue("text/html; charset=ISO-8859-1");
-		items.add(item);
-		assertEquals("iso-8859-1", IndexUtil.extractCharset(items));
-	}
-
-	@Test
-	public void testExtractCharset4(){
-		List<ArcFileHeaderItem> items = new ArrayList<ArcFileHeaderItem>();
-		ArcFileHeaderItem item = new ArcFileHeaderItem();
-		item.setItemKey("Content-Type");item.setItemValue("application/x-javascript; charset=utf-8");
-		items.add(item);
-		assertEquals("utf-8", IndexUtil.extractCharset(items));
-	}
-
-	@Test
-	public void testExtractCharset5(){
-		List<ArcFileHeaderItem> items = new ArrayList<ArcFileHeaderItem>();
-		ArcFileHeaderItem item = new ArcFileHeaderItem();
-		item.setItemKey("foo");item.setItemValue("foo");
-		items.add(item);
-		assertEquals("none", IndexUtil.extractCharset(items));
-	}
 }

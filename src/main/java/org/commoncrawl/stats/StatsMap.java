@@ -43,6 +43,7 @@ public class StatsMap {
 					byte[] rawData = IOUtils.toByteArray(r, r.available());
 					String content = new String(rawData);
 					JSONObject json = new JSONObject(content);
+					// Ensure the given record is response
 					if (!json.getJSONObject("Envelope").getJSONObject("Payload-Metadata").getString("Actual-Content-Type").equals("application/http; msgtype=response")) {
 						continue;
 					}
@@ -75,14 +76,15 @@ public class StatsMap {
 							// Skip...
 						}
 						//
+						// Split "text/html; charset=utf-8" and similar into the media type and character set
 						String[] contentParts = contentType.toLowerCase().replaceAll("\\s+","").split(";");
 						String mediaType = contentParts[0];
 						String charset = contentParts.length > 1 ? contentParts[1] : "None";
 						//
-						String fname	= "";
+						String fname	= r.getHeader().getUrl();
 						String domain	= IndexUtil.getSecondLevelDomain(uri);
 						String psuffix	= IndexUtil.getPublicSuffix(domain);
-						Long byteSize	= Long.parseLong(byteSizeString);
+						long byteSize	= Long.parseLong(byteSizeString);
 						//
 						CCIndexKey k 	= new CCIndexKey(psuffix, domain, mediaType, charset, fname);
 						CCIndexValue v 	= new CCIndexValue(byteSize, hyperlinks, 1);

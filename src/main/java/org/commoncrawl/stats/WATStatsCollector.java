@@ -15,7 +15,6 @@ import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 import org.commoncrawl.warc.WARCFileInputFormat;
 
-import com.spiegler.index.CCIndexReducer;
 import com.spiegler.index.util.CCIndexKey;
 import com.spiegler.index.util.CCIndexValue;
 
@@ -45,20 +44,20 @@ public class WATStatsCollector extends Configured implements Tool {
 		//
 		conf.setBoolean("mapred.output.compress", true);
 		conf.setClass("mapred.output.compression.codec", GzipCodec.class, CompressionCodec.class);
-		conf.setInt("mapred.max.map.failures.percent", 10);
+		conf.setInt("mapred.max.map.failures.percent", 2);
 		//
 		Job job = new Job(conf);
 		job.setJarByClass(WATStatsCollector.class);
-		job.setNumReduceTasks(1);
+		job.setNumReduceTasks(0);
 		
 		String inputPath = "data/*.warc.wat.gz";
-		//inputPath = "s3n://aws-publicdatasets/common-crawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/CC-MAIN-20131204131715-00000-ip-10-33-133-15.ec2.internal.warc.wet.gz";
-		//inputPath = "s3n://aws-publicdatasets/common-crawl/crawl-data/CC-MAIN-2013-48/segments/1386163035819/wet/*.warc.wet.gz";
+		//inputPath = "s3n://aws-publicdatasets/common-crawl/crawl-data/CC-MAIN-2014-15/segments/1398223203235.2/wat/CC-MAIN-20140423032003-00663-ip-10-147-4-33.ec2.internal.warc.wat.gz";
 		LOG.info("Input path: " + inputPath);
 		FileInputFormat.addInputPath(job, new Path(inputPath));
 		
+		//String outputPath = "s3n://commoncrawl-smerity/stats/";
 		String outputPath = "/tmp/cc/";
-		FileSystem fs = FileSystem.newInstance(conf);
+		FileSystem fs = FileSystem.get(conf);
 		if (fs.exists(new Path(outputPath))) {
 			fs.delete(new Path(outputPath), true);
 		}
@@ -73,8 +72,8 @@ public class WATStatsCollector extends Configured implements Tool {
 	    job.setOutputValueClass(CCIndexValue.class);
 	    
 	    job.setMapperClass(StatsMap.StatsMapper.class);
-	    job.setReducerClass(CCIndexReducer.class);
-	    job.setCombinerClass(CCIndexReducer.class);
+	    //job.setReducerClass(CCIndexReducer.class);
+	    //job.setCombinerClass(CCIndexReducer.class);
 		
 	    if (job.waitForCompletion(true)) {
 	    	return 0;
