@@ -21,6 +21,7 @@ public class StatsMap {
 	protected static enum MAPPERCOUNTER {
 		RECORDS_IN,
 		RECORDS_RESPONSE,
+		RECORD_BYTESIZE,
 		NO_SERVER,
 		EXCEPTIONS,
 		JSON_EXCEPTION,
@@ -85,6 +86,7 @@ public class StatsMap {
 						String domain	= IndexUtil.getSecondLevelDomain(uri);
 						String psuffix	= IndexUtil.getPublicSuffix(domain);
 						long byteSize	= Long.parseLong(byteSizeString);
+						context.getCounter(MAPPERCOUNTER.RECORD_BYTESIZE).increment(byteSize);
 						//
 						CCIndexKey k 	= new CCIndexKey(psuffix, domain, mediaType, charset, fname);
 						CCIndexValue v 	= new CCIndexValue(byteSize, hyperlinks, 1);
