@@ -3,7 +3,7 @@
 ## References
 * [Common Crawl Foundation](http://commoncrawl.org/)
 * [The actual paper](https://docs.google.com/file/d/1_9698uglerxB9nAglvaHkEgU-iZNm1TvVGuCW7245-WGvZq47teNpb_uL5N9/edit)
-* Raw index on AWS S3: `s3://commoncrawl`
+* Raw index on AWS S3: `s3://commoncrawl/index2012/`
 
 ## MapReduce code
 
